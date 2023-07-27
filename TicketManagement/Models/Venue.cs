@@ -14,4 +14,6 @@ public partial class Venue
     public int? VenueCapacity { get; set; }
 
     public virtual ICollection<EventU> EventUs { get; set; } = new List<EventU>();
+
+   
 }

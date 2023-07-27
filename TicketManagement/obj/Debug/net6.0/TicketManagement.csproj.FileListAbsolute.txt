@@ -90,3 +90,4 @@ C:\Users\Gabriel\source\repos\TicketManagement\bin\Debug\net6.0\AutoMapper.Exten
 C:\Users\Gabriel\source\repos\TicketManagement\bin\Debug\net6.0\NLog.dll
 C:\Users\Gabriel\source\repos\TicketManagement\bin\Debug\net6.0\NLog.Extensions.Logging.dll
 C:\Users\Gabriel\source\repos\TicketManagement\bin\Debug\net6.0\NLog.Web.AspNetCore.dll
+C:\Users\Gabriel\source\repos\TicketManagement\bin\Debug\net6.0\nlog.config

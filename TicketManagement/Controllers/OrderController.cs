@@ -12,11 +12,15 @@ namespace TicketManagement.Controllers
 
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
+        private readonly ITicketCategoryRepository _ticketCategoryRepository;
+        private readonly ILogger _logger;
 
-        public OrderController(IOrderRepository orderRepository, IMapper mapper)
+        public OrderController(IOrderRepository orderRepository, IMapper mapper, ITicketCategoryRepository ticketCategoryRepository, ILogger<EventController> logger)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
+            _ticketCategoryRepository = ticketCategoryRepository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -48,16 +52,19 @@ namespace TicketManagement.Controllers
         public async Task<ActionResult<OrderPatchDto>> Patch(OrderPatchDto orderPatch)
         {
             var orderEntity = await _orderRepository.GetById(orderPatch.IdOrderPatch);
+            
             if (orderEntity == null)
             {
                 return NotFound();
             }
+            var ticketByid = await _ticketCategoryRepository.GetById(orderPatch.IdTicketCategoryPatch);
+            double price = (double)(ticketByid.Price * orderEntity.NumberOfTickets);
+            orderEntity.TotalPrice = price;
+            Console.WriteLine(price);
             _mapper.Map(orderPatch, orderEntity);
             _orderRepository.Update(orderEntity);
+            
             return Ok(orderEntity);
-
-
-
         }
 
         [HttpDelete]

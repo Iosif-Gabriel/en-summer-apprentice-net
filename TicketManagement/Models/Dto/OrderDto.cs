@@ -14,7 +14,7 @@
 
         public double TotalPrice { get; set; }
 
-        public virtual int IdTicketCategoryNavigation { get; set; }
+        public virtual TicketCategoryDto IdTicketCategoryNavigation { get; set; }
 
         public virtual string IdUserNavigation { get; set; } = null!;
     }

@@ -8,6 +8,8 @@
         public string EventDescription { get; set; } = string.Empty;
         public string EventType { get; set; } = string.Empty;
 
-        public string Venue { get; set; }
+        public VenueDto Venue { get; set; }
+
+        public virtual ICollection<TicketCategoryDto> TicketCategories { get; set; }
     }
 }

@@ -9,7 +9,7 @@
 
         public int NumberOfTicketsPatch { get; set; }
 
-        public double TotalPricePatch { get; set; }
+       // public double TotalPricePatch { get; set; }
 
       
     }

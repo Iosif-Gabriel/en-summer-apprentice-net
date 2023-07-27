@@ -3,6 +3,7 @@ using System.Text.Json;
 using TicketManagement.Profiles;
 using TicketManagement.Repositories;
 using TicketManagement.Services;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +16,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IEventRepository, EventRepository>();
 //builder.Services.AddSingleton<ITestServices, TestService>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<ITicketCategoryRepository, TicketCategoryRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 var app = builder.Build();
 
 

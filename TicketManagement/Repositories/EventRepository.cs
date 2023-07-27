@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TicketManagement.Models;
-using AutoMapper;
+using TicketManagement.Exceptions;
 
 namespace TicketManagement.Repositories
 {
@@ -31,7 +31,7 @@ namespace TicketManagement.Repositories
         public IEnumerable<EventU> GetAll()
         {
             var events = _dbContext.EventUs.Include(e => e.IdVenueNavigation)
-                .Include(e => e.IdEventTypeNavigation);
+                .Include(e => e.IdEventTypeNavigation).Include(e=>e.TicketCategories);
           
             return events;
         }
@@ -39,7 +39,10 @@ namespace TicketManagement.Repositories
         public async Task<EventU> GetById(int id)
         {
             var @event = await _dbContext.EventUs.Include(e => e.IdVenueNavigation)
-                .Include(e => e.IdEventTypeNavigation).Where(e => e.Idevent == id).FirstOrDefaultAsync();
+                .Include(e => e.IdEventTypeNavigation).Where(e => e.Idevent == id).Include(e => e.TicketCategories).FirstOrDefaultAsync();
+
+            if (@event == null)
+                throw new EntityNotFoundException(id, nameof(EventU));
 
             return @event;
         }
