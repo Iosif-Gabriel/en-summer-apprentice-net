@@ -13,7 +13,12 @@ public partial class PracticaEndava2Context : DbContext
     public PracticaEndava2Context(DbContextOptions<PracticaEndava2Context> options)
         : base(options)
     {
+        
     }
+
+  
+
+
 
     public virtual DbSet<EventType> EventTypes { get; set; }
 

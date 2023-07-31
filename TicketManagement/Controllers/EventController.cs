@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TicketManagement.Models.Dto;
-using TicketManagement.Repositories;
+using TicketManagement.Repositories.Interfaces;
 
 namespace TicketManagement.Controllers
 {
@@ -10,13 +11,14 @@ namespace TicketManagement.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly IEventRepository _eventRepository;
+        private readonly IEventRepository _eventRepositoryMock;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
+
         public EventController(IEventRepository eventRepository, IMapper mapper, ILogger<EventController> logger)
         {
-            _eventRepository = eventRepository;
+            _eventRepositoryMock = eventRepository;
             _mapper = mapper;
             _logger = logger;
 
@@ -25,7 +27,7 @@ namespace TicketManagement.Controllers
         [HttpGet]
         public ActionResult<List<EventDto>> GetAll()
         {
-            var events = _eventRepository.GetAll();
+            var events = _eventRepositoryMock.GetAll();
 
             var dtoEvents = _mapper.Map<List<EventDto>>(events);
 
@@ -36,7 +38,8 @@ namespace TicketManagement.Controllers
         [HttpGet]
         public async Task<ActionResult<EventDto>> GetById(int id)
         {
-            var @event = await _eventRepository.GetById(id);
+
+            var @event = await _eventRepositoryMock.GetById(id);
 
             if (@event == null)
             {
@@ -51,28 +54,32 @@ namespace TicketManagement.Controllers
         [HttpPatch]
         public async Task<ActionResult<EventPatchDto>> Patch(EventPatchDto eventPatch)
         {
-            var eventEntity = await _eventRepository.GetById(eventPatch.EventId);
+            var eventEntity = await _eventRepositoryMock.GetById(eventPatch.EventId);
             if (eventEntity == null)
             {
                 return NotFound();
             }
             if (!eventPatch.EventName.IsNullOrEmpty()) eventEntity.EventName = eventPatch.EventName;
             if (!eventPatch.EventDescription.IsNullOrEmpty()) eventEntity.DescriptionEvent = eventPatch.EventDescription;
-            _eventRepository.Update(eventEntity);
+            _eventRepositoryMock.Update(eventEntity);
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
-            var eventEntity = await _eventRepository.GetById(id);
+            var eventEntity = await _eventRepositoryMock.GetById(id);
             if (eventEntity == null)
             {
                 return NotFound();
             }
-            _eventRepository.Delete(eventEntity);
+            _eventRepositoryMock.Delete(eventEntity);
             return NoContent();
         }
+
+
+     
+
     }
 
 }

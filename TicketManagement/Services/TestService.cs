@@ -1,4 +1,6 @@
-﻿namespace TicketManagement.Services
+﻿using Microsoft.Extensions.Options;
+
+namespace TicketManagement.Services
 {
     public class TestService : ITestServices
     {

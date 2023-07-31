@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TicketManagement.Models;
+using TicketManagement.Repositories.Interfaces;
 
 namespace TicketManagement.Repositories
 {

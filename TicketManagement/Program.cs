@@ -4,6 +4,8 @@ using TicketManagement.Profiles;
 using TicketManagement.Repositories;
 using TicketManagement.Services;
 using NLog.Web;
+using Microsoft.Extensions.Options;
+using TicketManagement.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,13 @@ builder.Services.AddTransient<IEventRepository, EventRepository>();
 //builder.Services.AddSingleton<ITestServices, TestService>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<ITicketCategoryRepository, TicketCategoryRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
 var app = builder.Build();

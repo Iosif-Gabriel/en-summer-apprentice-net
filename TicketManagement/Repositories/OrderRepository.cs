@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using TicketManagement.Exceptions;
 using TicketManagement.Models;
+using TicketManagement.Repositories.Interfaces;
 
 namespace TicketManagement.Repositories
 {
@@ -15,9 +16,10 @@ namespace TicketManagement.Repositories
             _dbContext = new PracticaEndava2Context();
         }
 
-        public int Add(OrderU @order)
+        public void Add(OrderU @order)
         {
-            throw new NotImplementedException();
+            _dbContext.OrderUs.Add(@order);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(OrderU @order)
@@ -39,9 +41,10 @@ namespace TicketManagement.Repositories
 
         public async Task<OrderU> GetById(int id)
         {
-            var @order = await _dbContext.OrderUs.Include(e => e.IdUserNavigation)
-                .Include(e => e.IdTicketCategoryNavigation).Where(e => e.IdOrder == id).FirstOrDefaultAsync();
+            var @order = await _dbContext.OrderUs.Where(e => e.IdOrder == id).
+                Include(e => e.IdTicketCategoryNavigation).FirstOrDefaultAsync();
 
+            
             if (@order == null)
                 throw new EntityNotFoundException(id, nameof(OrderU));
 

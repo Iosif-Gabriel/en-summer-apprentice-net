@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using TicketManagement.Models;
 using TicketManagement.Exceptions;
+using TicketManagement.Repositories.Interfaces;
 
 namespace TicketManagement.Repositories
 {
@@ -38,13 +39,21 @@ namespace TicketManagement.Repositories
 
         public async Task<EventU> GetById(int id)
         {
-            var @event = await _dbContext.EventUs.Include(e => e.IdVenueNavigation)
-                .Include(e => e.IdEventTypeNavigation).Where(e => e.Idevent == id).Include(e => e.TicketCategories).FirstOrDefaultAsync();
+            try
+            {
+                var @event = await _dbContext.EventUs.Include(e => e.IdVenueNavigation)
+                    .Include(e => e.IdEventTypeNavigation).Where(e => e.Idevent == id).Include(e => e.TicketCategories).FirstOrDefaultAsync();
 
-            if (@event == null)
-                throw new EntityNotFoundException(id, nameof(EventU));
+                if (@event == null)
+                    throw new EntityNotFoundException(id, nameof(EventU));
 
-            return @event;
+                return @event;
+            }
+            catch (Exception ex)
+            {
+               
+                return null;
+            }
         }
 
         public void Update(EventU @event)
